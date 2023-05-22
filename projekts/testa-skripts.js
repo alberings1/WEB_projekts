@@ -23,35 +23,51 @@ var timerInterval;
       clearInterval(timerInterval);
 
       var atbildes = {
-        atbilde1: 'Ābols',
-        atbilde2: 'Vīnogas',
-        atbilde3: 'Brūklenes',
-        atbilde4: 'Ērkšķogas',
-        atbilde5: 'Banāns'
+        atbilde1: 'ābols',
+        atbilde2: 'vīnogas',
+        atbilde3: 'brūklenes',
+        atbilde4: 'ērkšķogas',
+        atbilde5: 'banāns',
+        atbilde6: 'smiltsērķšķis',
+        atbilde7: 'pitaija',
+        atbilde8: 'hurma',
+        atbilde9: 'jāņogas',
+        atbilde10: 'upenes'
       };
-
+      
       var atbilde1 = this.elements['atbilde-1'].value.toLowerCase();
       var atbilde2 = this.elements['atbilde-2'].value.toLowerCase();
-      var atbilde3 = this.elements['atbilde-3'].value.toLowerCase();        var atbilde4 = this.elements['atbilde-4'].value.toLowerCase();
+      var atbilde3 = this.elements['atbilde-3'].value.toLowerCase();
+      var atbilde4 = this.elements['atbilde-4'].value.toLowerCase();
       var atbilde5 = this.elements['atbilde-5'].value.toLowerCase();
+      var atbilde6 = this.elements['atbilde-6'].value.toLowerCase();
+      var atbilde7 = this.elements['atbilde-7'].value.toLowerCase();
+      var atbilde8 = this.elements['atbilde-8'].value.toLowerCase();
+      var atbilde9 = this.elements['atbilde-9'].value.toLowerCase();
+      var atbilde10 = this.elements['atbilde-10'].value.toLowerCase();
       
       var rezultati = {
         atbilde1: atbilde1 === atbildes.atbilde1,
         atbilde2: atbilde2 === atbildes.atbilde2,
         atbilde3: atbilde3 === atbildes.atbilde3,
         atbilde4: atbilde4 === atbildes.atbilde4,
-        atbilde5: atbilde5 === atbildes.atbilde5
+        atbilde5: atbilde5 === atbildes.atbilde5,
+        atbilde6: atbilde6 === atbildes.atbilde6,
+        atbilde7: atbilde7 === atbildes.atbilde7,
+        atbilde8: atbilde8 === atbildes.atbilde8,
+        atbilde9: atbilde9 === atbildes.atbilde9,
+        atbilde10: atbilde10 === atbildes.atbilde10
       };
-
+      
       var pareizas = 0;
       for (var atbilde in rezultati) {
         if (rezultati[atbilde]) {
           pareizas++;
         }
       }
-
+      
       var procents = (pareizas / Object.keys(rezultati).length) * 100;
-
+      
       var rezultatuTeksts = 'Jūsu rezultāti:\n\n';
       for (var atbilde in rezultati) {
         if (rezultati[atbilde]) {
@@ -66,7 +82,7 @@ var timerInterval;
       }
       rezultatuTeksts += '\nKopējais rezultāts: ' + procents.toFixed(2) + '%\n';
       rezultatuTeksts += 'Pavadītais laiks: ' + formatTime(Math.floor((Date.now() - startTime) / 1000));
-
+      
       document.getElementById("komentars").textContent = rezultatuTeksts;
 
       document.getElementById("download-button").style.display = "block";
