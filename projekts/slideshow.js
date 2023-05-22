@@ -12,5 +12,8 @@ function nextSlide() {
   showSlide(nextSlideIndex);
 }
 
+// Display default slide on page load
+showSlide(currentSlide);
+
 // Change slide every 3 seconds
 setInterval(nextSlide, 3000);
