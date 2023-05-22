@@ -1,67 +1,98 @@
-document.getElementById('testa-forma').addEventListener('submit', function(event) {
-    event.preventDefault();
+var timerInterval;
+    var startTime;
 
-    var atbildes = {
-      atbilde1: 'dzērveņe',
-      atbilde2: 'ābols',
-      atbilde3: 'smiltsērkšķis'
-    };
+    document.getElementById('start-button').addEventListener('click', function() {
+      startTime = Date.now();
+      document.getElementById('start-button').style.display = 'none';
+      document.getElementById('testa-forma').style.display = 'block';
 
-    var rezultati = {};
+      timerInterval = setInterval(function() {
+        var elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+        var timerElement = document.getElementById('timer');
+        timerElement.textContent = 'Laiks: ' + formatTime(elapsedTime);
 
-    // Nolasīt studentu atbildes
-    var atbilde1 = this.elements["atbilde-1"].value.toLowerCase();
-    var atbilde2 = this.elements["atbilde-2"].value.toLowerCase();
-    var atbilde3 = this.elements["atbilde-3"].value.toLowerCase();
+        if (elapsedTime > 60) {
+          timerElement.style.color = 'black';
+        }
+      }, 1000);
+    });
 
-    // Pārbaudīt, vai studentu atbildes ir pareizas
-    if (atbilde1 == atbildes.atbilde1) {
-      rezultati.atbilde1 = true;
-    } else {
-      rezultati.atbilde1 = false;
-    }
+    document.getElementById('testa-forma').addEventListener('submit', function(event) {
+      event.preventDefault();
 
-    if (atbilde2 == atbildes.atbilde2) {
-      rezultati.atbilde2 = true;
-    } else {
-      rezultati.atbilde2 = false;
-    }
+      clearInterval(timerInterval);
 
-    if (atbilde3 == atbildes.atbilde3) {
-      rezultati.atbilde3 = true;
-    } else {
-      rezultati.atbilde3 = false;
-    }
+      var atbildes = {
+        atbilde1: 'dzērveņe',
+        atbilde2: 'ābols',
+        atbilde3: 'smiltsērkšķis'
+      };
 
-    // Aprēķināt procentuālo rezultātu
-    var pareizas = 0;
-    for (var atbilde in rezultati) {
-      if (rezultati[atbilde]) {
-        pareizas++;
+      var atbilde1 = this.elements['atbilde-1'].value.toLowerCase();
+      var atbilde2 = this.elements['atbilde-2'].value.toLowerCase();
+      var atbilde3 = this.elements['atbilde-3'].value.toLowerCase();
+
+      var rezultati = {
+        atbilde1: atbilde1 === atbildes.atbilde1,
+        atbilde2: atbilde2 === atbildes.atbilde2,
+        atbilde3: atbilde3 === atbildes.atbilde3
+      };
+
+      var pareizas = 0;
+      for (var atbilde in rezultati) {
+        if (rezultati[atbilde]) {
+          pareizas++;
+        }
       }
-    }
-    var procents = (pareizas / Object.keys(rezultati).length) * 100;
 
-    // Izveidot rezultātu teksta virkni
-    var rezultatuTeksts = 'Jūsu rezultāti:\n\n';
-    for (var atbilde in rezultati) {
-      if (rezultati[atbilde]) {
-        rezultatuTeksts += 'Jautājums ' + atbilde + ': Pareiza\n';
-      } else {
-        rezultatuTeksts += 'Jautājums ' + atbilde + ': Nepareiza\n';
+      var procents = (pareizas / Object.keys(rezultati).length) * 100;
+
+      var rezultatuTeksts = 'Jūsu rezultāti:\n\n';
+      for (var atbilde in rezultati) {
+        if (rezultati[atbilde]) {
+          rezultatuTeksts += 'Jautājums ' + atbilde + ': Pareiza\n';
+          document.getElementById('question-feedback-' + atbilde.charAt(atbilde.length - 1)).textContent = 'Pareiza';
+          document.getElementById('question-feedback-' + atbilde.charAt(atbilde.length - 1)).classList.add('correct');
+        } else {
+          rezultatuTeksts += 'Jautājums ' + atbilde + ': Nepareiza\n';
+          document.getElementById('question-feedback-' + atbilde.charAt(atbilde.length - 1)).textContent = 'Nepareiza';
+          document.getElementById('question-feedback-' + atbilde.charAt(atbilde.length - 1)).classList.add('wrong');
+        }
       }
+      rezultatuTeksts += '\nKopējais rezultāts: ' + procents.toFixed(2) + '%\n';
+      rezultatuTeksts += 'Pavadītais laiks: ' + formatTime(Math.floor((Date.now() - startTime) / 1000));
+
+      document.getElementById("download-button").style.display = "block";
+    });
+
+    document.getElementById("download-button").addEventListener("click", function() {
+      var resultText = document.getElementById("komentars").innerText;
+      var filename = "testa_rezultati.txt";
+
+      var element = document.createElement("a");
+      element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(resultText));
+      element.setAttribute("download", filename);
+
+      element.style.display = "none";
+      document.body.appendChild(element);
+
+      element.click();
+
+      document.body.removeChild(element);
+
+      document.getElementById('komentars').innerHTML = 'Apsveicam! Jūs esat pabeidzis testu.';
+      document.getElementById('komentars').style.color = 'green';
+    });
+
+    function formatTime(seconds) {
+      var minutes = Math.floor(seconds / 60);
+      var remainingSeconds = seconds % 60;
+
+      var formattedTime = '';
+      if (minutes > 0) {
+        formattedTime += minutes + ' min ';
+      }
+      formattedTime += remainingSeconds + ' s';
+
+      return formattedTime;
     }
-    rezultatuTeksts += '\nKopējais rezultāts: ' + procents.toFixed(2) + '%';
-
-    // Izveidot teksta failu ar rezultātiem un lejupielādēt to
-    var file = new Blob([rezultatuTeksts], {type: 'text/plain'});
-    var a = document.createElement('a');
-    a.href = URL.createObjectURL(file);
-    a.download = 'rezultati.txt';
-    a.click();
-
-    // Attēlot rezultātus un procentuālo rezultātu
-    var komentars = document.getElementById("komentars");
-    komentars.innerHTML = rezultatuTeksts;
-    komentars.style.color = "black";
-  });
