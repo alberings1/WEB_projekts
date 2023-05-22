@@ -1,10 +1,36 @@
 <!DOCTYPE html>
 <html lang="lv">
 <head>
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Augļu koku un krūmu zināšanu pārbaude</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .success-message {
+      color: green;
+      margin-top: 10px;
+    }
+    .timer {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            background-color: red;
+            color: white;
+            padding: 10px;
+            font-size: 20px;
+        }
+
+    .question-feedback {
+      margin-top: 5px;
+      font-weight: bold;
+    }
+    .correct {
+      color: green;
+    }
+    .wrong {
+      color: red;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -21,24 +47,31 @@
   </header>
   
   <h1>Augļu koku un krūmu zināšanu pārbaude</h1>
-  <form id="testa-forma">
+  <button id="start-button">Sākt testu</button>
+  <form id="testa-forma" style="display: none;">
     <div class="jautajums">
       <p>1. Kāds ir Latvijas tradicionālais auglis, kas ir sarkanā krāsā un ir daļa no dzērveņu dzimtas?</p>
       <input type="text" id="atbilde-1" placeholder="Ievadiet atbildi šeit" required>
+      <div class="question-feedback" id="question-feedback-1"></div>
     </div>
     <div class="jautajums">
       <p>2. Kāds ir populārākais auglis Latvijā, kas tiek audzēts gan dārzos, gan komerciālā mērogā?</p>
       <input type="text" id="atbilde-2" placeholder="Ievadiet atbildi šeit" required>
+      <div class="question-feedback" id="question-feedback-2"></div>
     </div>
     <div class="jautajums">
       <p>3. Kura krūmu suga sniedz mums mazos, saldos, sarkanās ogas, kas ir daļa no rubīnu dzimtas?</p>
       <input type="text" id="atbilde-3" placeholder="Ievadiet atbildi šeit" required>
+      <div class="question-feedback" id="question-feedback-3"></div>
     </div>
     <!-- ...Pārējie jautājumi... -->
     <input type="submit" value="Iesniegt atbildes">
     <input type="reset" value="Atjaunot">
   </form>
   <div id="komentars"></div>
+  <button id="download-button" style="display: none;">Lejupielādēt rezultātus</button>
+  <div class="timer" id="timer"></div>
+
   <script src="testa-skripts.js"></script>
 </body>
 </html>
