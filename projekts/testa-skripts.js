@@ -23,19 +23,24 @@ var timerInterval;
       clearInterval(timerInterval);
 
       var atbildes = {
-        atbilde1: 'dzērveņe',
-        atbilde2: 'ābols',
-        atbilde3: 'smiltsērkšķis'
+        atbilde1: 'Ābols',
+        atbilde2: 'Vīnogas',
+        atbilde3: 'Brūklenes',
+        atbilde4: 'Ērkšķogas',
+        atbilde5: 'Banāns'
       };
 
       var atbilde1 = this.elements['atbilde-1'].value.toLowerCase();
       var atbilde2 = this.elements['atbilde-2'].value.toLowerCase();
-      var atbilde3 = this.elements['atbilde-3'].value.toLowerCase();
-
+      var atbilde3 = this.elements['atbilde-3'].value.toLowerCase();        var atbilde4 = this.elements['atbilde-4'].value.toLowerCase();
+      var atbilde5 = this.elements['atbilde-5'].value.toLowerCase();
+      
       var rezultati = {
         atbilde1: atbilde1 === atbildes.atbilde1,
         atbilde2: atbilde2 === atbildes.atbilde2,
-        atbilde3: atbilde3 === atbildes.atbilde3
+        atbilde3: atbilde3 === atbildes.atbilde3,
+        atbilde4: atbilde4 === atbildes.atbilde4,
+        atbilde5: atbilde5 === atbildes.atbilde5
       };
 
       var pareizas = 0;
@@ -62,27 +67,30 @@ var timerInterval;
       rezultatuTeksts += '\nKopējais rezultāts: ' + procents.toFixed(2) + '%\n';
       rezultatuTeksts += 'Pavadītais laiks: ' + formatTime(Math.floor((Date.now() - startTime) / 1000));
 
+      document.getElementById("komentars").textContent = rezultatuTeksts;
+
       document.getElementById("download-button").style.display = "block";
     });
 
     document.getElementById("download-button").addEventListener("click", function() {
-      var resultText = document.getElementById("komentars").innerText;
-      var filename = "testa_rezultati.txt";
-
-      var element = document.createElement("a");
-      element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(resultText));
-      element.setAttribute("download", filename);
-
-      element.style.display = "none";
-      document.body.appendChild(element);
-
-      element.click();
-
-      document.body.removeChild(element);
-
-      document.getElementById('komentars').innerHTML = 'Apsveicam! Jūs esat pabeidzis testu.';
-      document.getElementById('komentars').style.color = 'green';
-    });
+        var resultText = document.getElementById("komentars").textContent; // Use textContent instead of innerText
+        var filename = "testa_rezultati.txt";
+      
+        var element = document.createElement("a");
+        element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(resultText));
+        element.setAttribute("download", filename);
+      
+        element.style.display = "none";
+        document.body.appendChild(element);
+      
+        element.click();
+      
+        document.body.removeChild(element);
+      
+        document.getElementById('komentars').innerHTML = 'Apsveicam! Jūs esat pabeidzis testu.';
+        document.getElementById('komentars').style.color = 'green';
+      });
+      
 
     function formatTime(seconds) {
       var minutes = Math.floor(seconds / 60);
