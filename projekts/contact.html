@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sazinies ar mums</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Sazinies ar mums</h1>
+    <nav>
+        <ul>
+          <li><a href="augli_koki.html">Sākums</a></li>
+          <li><a href="test_akuk.html">tests</a></li>
+          <li><a href="auglu_koki.html">Koki</a></li>
+          <li><a href="krumi.html">Krūmi</a></li>
+          <li><a href="contact.html">Kontakti</a></li>
+        </ul>
+      </nav>
+  </header>
+  
+  <main>
+    <section>
+      <h2>Kontaktinformācija</h2>
+      <p>Lūdzu, atstājiet savu komentāru vai jautājumu, un mēs sazināsimies ar jums.</p>
+    </section>
+    
+    <section>
+      <h2>Sazināšanās forma</h2>
+      <form id="contact-form">
+        <div>
+          <label for="vards">Vārds:</label>
+          <input type="text" id="vards" name="vards" required>
+        </div>
+        <div>
+          <label for="epasts">E-pasts:</label>
+          <input type="email" id="epasts" name="epasts" required>
+        </div>
+        <div>
+          <label for="zina">Ziņa:</label>
+          <textarea id="zina" name="zina" rows="5" required></textarea>
+        </div>
+        <div>
+          <input type="submit" value="Nosūtīt ziņu">
+          <input type="reset" value="Atjaunot">
+        </div>
+      </form>
+    </section>
+  </main>
+  
+  <footer>
+    <p>Visas tiesības aizsargātas &copy; 2023 Sazinies ar mums</p>
+  </footer>
+
+  <script>
+    document.getElementById('contact-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var successMessage = document.createElement('p');
+      successMessage.textContent = 'Ziņojums nosūtīts veiksmīgi!';
+      successMessage.classList.add('success-message');
+      this.appendChild(successMessage);
+      this.reset();
+    });
+  </script>
+</body>
+</html>
