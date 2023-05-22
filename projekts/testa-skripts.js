@@ -1,35 +1,67 @@
-// Funkcija, kas pārbauda studentu atbildes un izvada komentāru
-function parbaudit(forma) {
+document.getElementById('testa-forma').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    var atbildes = {
+      atbilde1: 'dzērveņe',
+      atbilde2: 'ābols',
+      atbilde3: 'smiltsērkšķis'
+    };
+
+    var rezultati = {};
+
     // Nolasīt studentu atbildes
-    var atbilde1 = forma.elements["atbilde-1"].value.toLowerCase();
-    var atbilde2 = forma.elements["atbilde-2"].value.toLowerCase();
-    var atbilde3 = forma.elements["atbilde-3"].value.toLowerCase();
-  
-    // Uzstādīt pareizās atbildes
-    var pareiza1 = "dzērveņe";
-    var pareiza2 = "ābols";
-    var pareiza3 = "smiltsērkšķis";
-  
-    // Uzstādīt komentāra elementu
-    var komentars = document.getElementById("komentars");
-  
+    var atbilde1 = this.elements["atbilde-1"].value.toLowerCase();
+    var atbilde2 = this.elements["atbilde-2"].value.toLowerCase();
+    var atbilde3 = this.elements["atbilde-3"].value.toLowerCase();
+
     // Pārbaudīt, vai studentu atbildes ir pareizas
-    if (atbilde1 == pareiza1 && atbilde2 == pareiza2 && atbilde3 == pareiza3) {
-      // Ja visas atbildes ir pareizas, izvadīt apsveikuma komentāru
-      komentars.innerHTML = "Apsveicam! Jūs esat pareizi atbildējis uz visiem jautājumiem!";
-      komentars.style.color = "green";
+    if (atbilde1 == atbildes.atbilde1) {
+      rezultati.atbilde1 = true;
     } else {
-      // Ja kaut viena no atbildēm ir nepareiza, izvadīt kļūdas komentāru
-      komentars.innerHTML = "Diemžēl jūs esat kļūdījies. Lūdzu, pārbaudiet savas atbildes un mēģiniet vēlreiz.";
-      komentars.style.color = "red";
+      rezultati.atbilde1 = false;
     }
-  
-    // Novērst lsapas pārlādi pēc formas nosūtīšanas
-    return false;
-  }
-  
-  // Pievienot funkciju formas nosūtīšanas notikumam
-  document.getElementById("testa-forma").onsubmit = function() {
-    return parbaudit(this);
-  };
-   
+
+    if (atbilde2 == atbildes.atbilde2) {
+      rezultati.atbilde2 = true;
+    } else {
+      rezultati.atbilde2 = false;
+    }
+
+    if (atbilde3 == atbildes.atbilde3) {
+      rezultati.atbilde3 = true;
+    } else {
+      rezultati.atbilde3 = false;
+    }
+
+    // Aprēķināt procentuālo rezultātu
+    var pareizas = 0;
+    for (var atbilde in rezultati) {
+      if (rezultati[atbilde]) {
+        pareizas++;
+      }
+    }
+    var procents = (pareizas / Object.keys(rezultati).length) * 100;
+
+    // Izveidot rezultātu teksta virkni
+    var rezultatuTeksts = 'Jūsu rezultāti:\n\n';
+    for (var atbilde in rezultati) {
+      if (rezultati[atbilde]) {
+        rezultatuTeksts += 'Jautājums ' + atbilde + ': Pareiza\n';
+      } else {
+        rezultatuTeksts += 'Jautājums ' + atbilde + ': Nepareiza\n';
+      }
+    }
+    rezultatuTeksts += '\nKopējais rezultāts: ' + procents.toFixed(2) + '%';
+
+    // Izveidot teksta failu ar rezultātiem un lejupielādēt to
+    var file = new Blob([rezultatuTeksts], {type: 'text/plain'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(file);
+    a.download = 'rezultati.txt';
+    a.click();
+
+    // Attēlot rezultātus un procentuālo rezultātu
+    var komentars = document.getElementById("komentars");
+    komentars.innerHTML = rezultatuTeksts;
+    komentars.style.color = "black";
+  });
